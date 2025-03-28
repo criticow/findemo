@@ -1,0 +1,86 @@
+<div class="container mx-auto max-w-6xl h-screen p-6 select-none">
+  <div class="relative flex flex-col w-full h-full p-6 bg-white rounded-lg shadow-md">
+    <app-menu />
+    <h1 class="text-2xl font-bold text-center mb-4">Visão Geral das Transações</h1>
+
+    <div class="flex gap-4 mb-4">
+      <div>
+        <label for="year" class="block text-xs font-medium">Ano</label>
+        <select
+          name="year"
+          id="year"
+          [(ngModel)]="selectedYear"
+          (change)="onYearChange()"
+          class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 no-validate"
+        >
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="month" class="block text-xs font-medium">Mês</label>
+        <select
+          name="month"
+          id="month"
+          [(ngModel)]="selectedMonth"
+          (change)="getMonthlyTransactions()"
+          class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 no-validate"
+        >
+          <option *ngFor="let month of availableMonths" [value]="month.value">{{ month.name }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex border-b border-b-gray-200 mb-4">
+      <button
+        (click)="tab = 1"
+        class="px-4 py-2 text-lg font-medium border-b-2"
+        [ngClass]="tab === 1 ? 'border-blue-500' : 'border-transparent'"
+      >
+        Resumo
+      </button>
+      <button
+        (click)="tab = 2"
+        class="px-4 py-2 text-lg font-medium border-b-2"
+        [ngClass]="tab === 2 ? 'border-blue-500' : 'border-transparent'"
+      >
+        Transações
+      </button>
+    </div>
+    
+    @if(tab === 1) {
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @let reduced = totals;
+  
+        <!-- Card de Transações Positivas -->
+        <div class="p-6 bg-green-100 border border-green-300 rounded-lg shadow-md text-center">
+          <h2 class="text-lg font-bold text-green-700">Positivos</h2>
+          <p class="text-2xl font-semibold text-green-600">{{ reduced.positiveCount }} transações</p>
+          <p class="text-xl font-medium text-green-800">{{ reduced.positiveSum | currency:'BRL' }}</p>
+        </div>
+  
+        <!-- Card de Transações Negativas -->
+        <div class="p-6 bg-red-100 border border-red-300 rounded-lg shadow-md text-center">
+          <h2 class="text-lg font-bold text-red-700">Negativos</h2>
+          <p class="text-2xl font-semibold text-red-600">{{ reduced.negativeCount }} transações</p>
+          <p class="text-xl font-medium text-red-800">{{ reduced.negativeSum | currency:'BRL' }}</p>
+        </div>
+  
+        <!-- Card Geral -->
+        <div class="p-6 bg-blue-100 border border-blue-300 rounded-lg shadow-md text-center">
+          <h2 class="text-lg font-bold text-blue-700">Geral</h2>
+          <p class="text-2xl font-semibold text-blue-600">{{ reduced.totalCount }} transações</p>
+          <p class="text-xl font-medium text-blue-800">{{ reduced.totalSum | currency:'BRL' }}</p>
+        </div>
+      </div>
+    } @else {
+      <div class="space-y-2 p-2 rounded-md grow overflow-y-auto bg-gray-100">
+        @for(transaction of transactions; track $index)
+        {
+          <app-transaction [transaction]="transaction" />
+        }
+      </div>
+    }
+
+  </div>
+</div>

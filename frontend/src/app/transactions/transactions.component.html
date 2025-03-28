@@ -1,0 +1,111 @@
+<div class="container mx-auto max-w-6xl h-screen p-6 select-none">
+  <div class="relative flex flex-col w-full h-full p-6 bg-white rounded-lg shadow-md">
+    <app-menu />
+    <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Entradas Financeiras</h2>
+    <form #form="ngForm" (submit)="onSubmit(form)" class="space-y-4">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex items-center relative w-full">
+          <input
+            #descriptionInput
+            type="text"
+            placeholder="Descrição"
+            name="description"
+            required
+            autocomplete="off"
+            [(ngModel)]="transaction.description"
+            class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <div
+            class="absolute flex w-7 h-[calc(100%_-_0.05rem)] items-center justify-center rounded-e-md right-0"
+            (click)="transaction.description = ''; descriptionInput.focus()"
+          >
+            <x-icon class="w-5 h-5 text-gray-500" />
+          </div>
+        </div>
+
+        <div class="flex items-center relative md:w-md w-full">
+          <div
+            class="absolute flex w-10 h-full items-center justify-center rounded-s-md"
+            [ngClass]="signed ? 'bg-red-500' : 'bg-blue-500'"
+            (click)="signed = !signed; amountInput.focus()"
+          >
+            @if(signed) {
+              <minus-icon class="w-5 h-5 text-white" />
+            } @else {
+              <plus-icon class="w-5 h-5 text-white" />
+            }
+          </div>
+
+          <input
+            #amountInput
+            type="text"
+            placeholder="0,00"
+            name="amount"
+            mask="amount"
+            required
+            autocomplete="off"
+            [(ngModel)]="transaction.amount"
+            class="w-full py-2 pl-12 pr-10 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <div
+            class="absolute flex w-7 h-[calc(100%_-_0.05rem)] items-center justify-center rounded-e-md right-0"
+            (click)="transaction.amount = 0; amountInput.focus()"
+          >
+            <x-icon class="w-5 h-5 text-gray-500" />
+          </div>
+        </div>
+
+        <div class="flex items-center relative md:w-sm w-full">
+          <input
+            #dateInput
+            type="text"
+            name="date"
+            mask="date"
+            placeholder="dd/MM/aaaa"
+            [(ngModel)]="transaction.date"
+            autocomplete="off"
+            required
+            class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <div
+            class="absolute flex w-7 h-[calc(100%_-_0.05rem)] items-center justify-center rounded-e-md right-0"
+            (click)="transaction.date = ''; dateInput.focus()"
+          >
+            <x-icon class="w-5 h-5 text-gray-500" />
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end bg-white">
+        <button
+          type="submit"
+          class="flex items-center justify-center h-10 w-28 text-white bg-blue-500 rounded-md not-[:disabled]:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-45"
+          [disabled]="submiting || form.invalid"
+        >
+        @if(submiting) {
+          <spinner-icon class="w-5 h-5 text-white animate-spin fill-gray-500" />
+        } @else {
+          Adicionar
+        }
+        </button>
+      </div>
+    </form>
+    <h2 class="text-xl font-semibold text-center text-gray-700 my-6">Lançamentos Recentes</h2>
+    <div class="space-y-2 p-2 rounded-md grow overflow-y-auto bg-gray-100">
+      @if(loadingTransactions) {
+        <app-transaction-skeleton />
+        <app-transaction-skeleton />
+        <app-transaction-skeleton />
+        <app-transaction-skeleton />
+      } @else {
+        @for(transaction of transactions; track $index)
+        {
+          <app-transaction [transaction]="transaction" />
+        }
+      }
+
+    </div>
+  </div>
+</div>

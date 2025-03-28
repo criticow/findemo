@@ -1,0 +1,10 @@
+# Use the official PostgreSQL image as the base
+FROM postgres:alpine
+
+# Set environment variables for user, password, and database name
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=password123
+ENV POSTGRES_DB=financeiro
+
+# Expose the default PostgreSQL port
+EXPOSE 5432

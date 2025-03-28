@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+body {
+  @apply bg-gray-100;
+  font-family: "Inter", sans-serif;
+}
+
+.ng-dirty.ng-invalid:not(.no-validate) {
+  @apply border-red-600 focus:ring-red-600;
+}
+
+.ng-valid:not(.no-validate) {
+  @apply border-green-600 focus:ring-green-600;
+}

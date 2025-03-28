@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: financeiro
+  datasource:
+    url: jdbc:postgresql://${PSQL_IP:localhost}:${PSQL_PORT:5433}/financeiro
+    username: postgres
+    password: password123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      pool-name: SpringBootPostgreSQLHikariCP
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: smtp.hostinger.com
+    port: 465
+    username: ""
+    password: ""
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+            trust: smtp.hostinger.com
+            protocols: TLSv1.2
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          allow8bitmime: true
+          sendpartial: true
+jwt:
+  secret: jwtdevsecret
+
+frontend:
+  url: http://localhost:4200

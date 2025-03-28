@@ -1,0 +1,38 @@
+<div
+  class="absolute z-50 p-2 left-0 bg-white rounded-l-md"
+  [ngClass]="isOpen ? 'inset-y-0 border-r border-r-gray-200' : 'top-0'"
+>
+  <div class="flex flex-col h-full rounded-l-md">
+    <div
+      (click)="toggleMenu()"
+      class="p-2 w-max rounded-md cursor-pointer hover:bg-gray-100"
+    >
+      <list-icon class="w-5 h-5 text-white fill-gray-500" />
+    </div>
+    @if(isOpen) {
+      <div class="flex flex-col h-full w-72 py-2 grow space-y-1">
+        <div
+          routerLink="/dashboard"
+          routerLinkActive="bg-gray-100"
+          class="p-2 hover:bg-gray-100 rounded-md cursor-pointer"
+        >
+          Dashboard
+        </div>
+        <div
+          routerLink="/transactions"
+          routerLinkActive="bg-gray-100"
+          class="p-2 hover:bg-gray-100 rounded-md cursor-pointer"
+        >
+          Nova Transação
+        </div>
+        <div class="grow"></div>
+        <div
+          (click)="logout()"
+          class="p-2 bg-red-500 hover:bg-red-600 text-white rounded-md cursor-pointer"
+        >
+          Desconectar
+        </div>
+      </div>
+    }
+  </div>
+</div>

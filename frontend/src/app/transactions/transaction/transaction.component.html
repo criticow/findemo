@@ -1,0 +1,20 @@
+<div class="grow overflow-hidden text-ellipsis whitespace-nowrap">
+  <p
+    class="font-bold text-sm overflow-hidden text-ellipsis whitespace-nowrap"
+    [ngClass]="transaction.amount < 0 ? 'text-red-600' : 'text-green-600'"
+  >
+    {{transaction.description}}
+  </p>
+  <p class="text-xs text-gray-700">
+    Registro: {{transaction.createdAt | date: 'dd/MM/yyyy'}}
+  </p>
+  <p class="text-xs text-gray-700">
+    Transação: {{transaction.date | date: 'dd/MM/yyyy'}}
+  </p>
+</div>
+<p 
+  class="font-medium whitespace-nowrap"
+  [ngClass]="transaction.amount < 0 ? 'text-red-600' : 'text-green-600'"
+>
+  {{transaction.amount | currency: 'BRL'}}
+</p>

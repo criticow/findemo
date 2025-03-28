@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:alpine  # Use official PostgreSQL image from Docker Hub
+    container_name: postgres_container
+    ports:
+      - "5433:5432"  # Map host port 5433 to container port 5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: financeiro
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persistent volume for database data
+    networks:
+      - financeiro_app_network
+
+  spring:
+    image: criticow/findemoapi:latest
+    container_name: financeiroapi
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/financeiro
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password123
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+    networks:
+      - financeiro_app_network
+
+  angular:
+    image: criticow/findemoapp:latest
+    container_name: financeiroapp
+    ports:
+      - "4201:80"
+    depends_on:
+      - postgres
+      - spring
+    networks:
+      - financeiro_app_network
+
+networks:
+  financeiro_app_network:
+
+volumes:
+  postgres_data:
