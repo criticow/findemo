@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "28a9dbb7-4dab-4bd8-9a28-a7144a2beefd",
+		"name": "findemoapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22977575"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('jwt', '');\r",
+									"\r",
+									"if(pm.response.headers.has('token')) {\r",
+									"    pm.collectionVariables.set('jwt', pm.response.headers.get('token'));\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"seu@email.com\",\r\n    \"password\": \"suasenha123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/api/auth/signin",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('jwt', '');\r",
+									"\r",
+									"if(pm.response.headers.has('token')) {\r",
+									"    pm.collectionVariables.set('jwt', pm.response.headers.get('token'));\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"seu@email.com\",\r\n    \"password\": \"suasenha123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/api/auth/signup",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgotPassword",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('resetToken', '');\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"if(response['data'] && response['data']['token']) {\r",
+									"    pm.collectionVariables.set('resetToken', response['data']['token']);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"seu@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/api/auth/forgot-password",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resetPassword",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('jwt', '');\r",
+									"\r",
+									"if(pm.response.headers.has('token')) {\r",
+									"    pm.collectionVariables.set('jwt', pm.response.headers.get('token'));\r",
+									"    pm.collectionVariables.set('resetToken', '');\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"{{resetToken}}\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/api/auth/reset-password",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "createTransaction",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.collectionVariables.get(\"jwt\") === \"\") {\r",
+									"    throw new Error(\"Usuário não autenticado execute um dos métodos de auth antes.\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Compra no Mercado\",\r\n  \"date\": \"2025-03-22\",\r\n  \"amount\": 150.75\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/api/transactions",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTransactions",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.collectionVariables.get(\"jwt\") === \"\") {\r",
+									"    throw new Error(\"Usuário não autenticado execute um dos métodos de auth antes.\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/api/transactions?createdAt=2025-03-25",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "createdAt",
+									"value": "2025-03-25"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "montlhy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.collectionVariables.get(\"jwt\") === \"\") {\r",
+									"    throw new Error(\"Usuário não autenticado execute um dos métodos de auth antes.\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/api/transactions/monthly?month=3&year=2025",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"transactions",
+								"monthly"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "3"
+								},
+								{
+									"key": "year",
+									"value": "2025"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "groupedByYear",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.collectionVariables.get(\"jwt\") === \"\") {\r",
+									"    throw new Error(\"Usuário não autenticado execute um dos métodos de auth antes.\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/api/transactions/grouped-by-year",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"transactions",
+								"grouped-by-year"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "hello",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "jwt",
+			"value": ""
+		},
+		{
+			"key": "resetToken",
+			"value": ""
+		},
+		{
+			"key": "api_url",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
