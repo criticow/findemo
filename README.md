@@ -13,6 +13,7 @@ SMTP sejam configuradas no [backend](/backend/src/main/resources/application.yam
 
 - Versão demonstrativa completa [link](https://findemoapp.waddahex.com)
 - Caso queira testar o app spring use a coleção do [postman](/findemoapi.postman_collection.json)
+- Playlist de videos demonstrando, instalando e rodando o app [Playlist](https://www.youtube.com/playlist?list=PLarKNWkNTTWRWHMlOwdBubJxjOweFPH01)
 
 ## Instalação
 
