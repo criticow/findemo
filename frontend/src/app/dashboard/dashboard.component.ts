@@ -81,6 +81,7 @@ export class DashboardComponent {
 
   private getMonthName(month: number) {
     const date = new Date();
+    date.setDate(1);
     date.setMonth(month - 1);
     const monthName = date.toLocaleString('pt-BR', {
       month: 'long'
